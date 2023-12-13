@@ -3,6 +3,7 @@ export default {
         try {
             console.log(req.body, 'request instagram webhook body');
             console.log(req, 'request instagram webhook');
+            const token = process.env.TOKEN || 'token';
             if (
                 req.query['hub.mode'] == 'subscribe' &&
                 req.query['hub.verify_token'] == token
