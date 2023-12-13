@@ -1,9 +1,10 @@
 export default {
     instagramConsumerWebhook: async (req, res) => {
         try {
-            console.log(req.body, 'request instagram webhook body');
-            console.log(req, 'request instagram webhook');
+            console.log(req.query['hub.mode'], 'mode');
+            console.log(req.query['hub.verify_token'], 'verify token');
             const token = process.env.TOKEN || 'token';
+            console.log(token, 'token');
             if (
                 req.query['hub.mode'] == 'subscribe' &&
                 req.query['hub.verify_token'] == token
