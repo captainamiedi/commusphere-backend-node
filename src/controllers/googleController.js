@@ -15,5 +15,13 @@ export default {
         } catch (error) {
            console.log(error, 'handle error'); 
         }
+    },
+    gmailPushWebhook: async (req, res) => {
+        try {
+            console.log(req.body, 'webhook book')
+            console.log(req, 'webhook request');
+        } catch (error) {
+            console.log(error)
+        }
     }
 }

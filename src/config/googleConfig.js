@@ -140,6 +140,6 @@ async function getMessage(auth, messageId) {
   logCompleteJsonObject(res.data);
 }
 
-// let cred = await loadSavedCredentialsIfExist();
+let cred = await loadSavedCredentialsIfExist();
 // let messageId = '18c551696204d6e3';
 // await getMessage(cred, messageId);
