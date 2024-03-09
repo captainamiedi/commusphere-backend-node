@@ -3,14 +3,18 @@ import path from 'path';
 import process from 'process';
 import { authenticate } from '@google-cloud/local-auth';
 import { google } from 'googleapis';
+import readline from 'readline'
+import dotenv from 'dotenv';
 // const fs = require('fs').promises;
 // const path = require('path');
 // const process = require('process');
 // const {authenticate} = require('@google-cloud/local-auth');
 // const {google} = require('googleapis');
 
+dotenv.config();
+
 // If modifying these scopes, delete token.json.
-const SCOPES = ["https://mail.google.com/",
+export const SCOPES = ["https://mail.google.com/",
 "https://www.googleapis.com/auth/gmail.addons.current.message.action",
 "https://www.googleapis.com/auth/gmail.addons.current.message.metadata",
 "https://www.googleapis.com/auth/gmail.addons.current.message.readonly",
@@ -140,6 +144,23 @@ async function getMessage(auth, messageId) {
   logCompleteJsonObject(res.data);
 }
 
-let cred = await loadSavedCredentialsIfExist();
+export const oauth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  'http://localhost:8080/api/v1/oauth2callback'
+);
+
+const url = oauth2Client.generateAuthUrl({
+  // 'online' (default) or 'offline' (gets refresh_token)
+  access_type: 'offline',
+
+  // If you only need one scope you can pass it as a string
+  scope: SCOPES
+});
+
+google.options({auth: oauth2Client});
+
+// let cred = await loadSavedCredentialsIfExist();
+// connectPubSub()
 // let messageId = '18c551696204d6e3';
 // await getMessage(cred, messageId);
