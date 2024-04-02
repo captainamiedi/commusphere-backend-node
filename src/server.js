@@ -8,7 +8,15 @@ import Route from "./routes/index.js";
 import { errorHandler } from '@dimosbotsaris/express-error-handler';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express'
+import { createServer } from "http";
+import { Server } from "socket.io";
+import socketService from './Service/socketService.js';
 
+
+const httpServer = createServer(app);
+const io = new Server(httpServer, { /* options */ });
+
+global._io = io
 const prefix = '/api/v1'
 app.use(cors());
 
@@ -64,8 +72,8 @@ const options = {
       //   "https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.0/themes/3.x/theme-newspaper.css",
    })
  );
-
-app.listen(PORT, () => {
+ socketService(io)
+httpServer.listen(PORT, () => {
    console.log(`Server is up at ${PORT}`);
 });
 
