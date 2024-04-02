@@ -24,3 +24,16 @@ export const findSocialByOrgId = async (org_id, name) => {
         throw error
     }
 }
+
+export const updateSocial = async (org_id, payload) => {
+    try {
+        const social = await socialMedia.update(payload, {
+            where: {
+                org_id
+            }
+        })
+        return social
+    } catch (error) {
+        
+    }
+}
