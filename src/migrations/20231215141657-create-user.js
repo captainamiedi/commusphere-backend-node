@@ -16,13 +16,17 @@ module.exports = {
         type: Sequelize.STRING
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       phone_number: {
         type: Sequelize.STRING
       },
       password: {
         type: Sequelize.STRING
+      },
+      verify_email: {
+        type: Sequelize.BLOB
       },
       org_id: {
         type: Sequelize.UUID,

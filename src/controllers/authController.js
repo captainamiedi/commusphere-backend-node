@@ -1,10 +1,12 @@
 import { signupService } from "../Service/authService.js"
 import bcrypt from 'bcryptjs'
 import { generateToken } from "../middleware/authMiddleware.js";
-import { errorResponse, successResponseWithData } from "../utils/response.js";
+import { errorResponse, successResponse, successResponseWithData } from "../utils/response.js";
 import statusCode from "../utils/statusCode.js";
-import { comparePassword, findUserByEmail } from "../Service/user.js";
+import { comparePassword, findUserByEmail, updatePassword, findUserById } from "../Service/user.js";
 import { findOrgByEmail } from "../Service/organization.js";
+import { getPasswordResetURL, resetPasswordTemplate, transporter, usePasswordHashToMakeToken, welcomeEmailTemplate } from "../utils/email.js";
+import jwt from "jsonwebtoken"
 
 export default {
     signup: async (req, res) => {
@@ -45,7 +47,9 @@ export default {
             }
             const user = await signupService(userObj, orgObj)
             const token = generateToken(user.userRes.id, user.userRes.email, user.orgRes.org_name, user.orgRes.id)
-
+            // Welcome email and account verification Email
+            const emailTemplate = welcomeEmailTemplate(first_name)
+            transporter(emailTemplate, res)
             return successResponseWithData(res, statusCode.created, 'Signup successful', user)
         } catch (error) {
             console.log(error);
@@ -75,6 +79,44 @@ export default {
         } catch (error) {
             console.log(error);
             return errorResponse(res, error.statusCode || statusCode.serverError, error);    
+        }
+    },
+    sendPasswordResetEmail: async (req, res) => {
+        const {email} = req.body
+
+        try {
+            const user = await findUserByEmail(email)
+            console.log(user);
+            if(user === null || user === undefined) {
+                errorResponse(res, statusCode.notFound, 'Email not found')
+            }
+            const token = usePasswordHashToMakeToken(user.dataValues)
+            const url = getPasswordResetURL(user.dataValues, token)
+            const emailTemplate = resetPasswordTemplate(user.dataValues, url)
+            return transporter(emailTemplate, res)
+        } catch (error) {
+            console.log(error, 'error');
+            return errorResponse(res, error.statusCode || statusCode.serverError, error)
+        }
+    },
+    receiveNewPassword: async (req, res) => {
+        try {
+            const { userId, token } = req.params;
+            const { password } = req.body;
+            const user = await findUserById(userId)
+            console.log(user.dataValues.password, 'user');
+            const secret = `${user.dataValues.password}-${user.dataValues.createdAt}`;
+            const payload = jwt.decode(token, secret);
+            if (payload.userId === user.id) {
+                const salt = await bcrypt.genSalt(6);
+                const hashed = await bcrypt.hash(password, salt);
+                await updatePassword(hashed, user.id)
+                return successResponse(res, statusCode.success, 'Password Reset Successful')
+            }
+            return errorResponse(res, statusCode.badRequest, 'Something went wrong')
+        } catch (error) {
+            console.log(error);
+            return errorResponse(res, error.statusCode || statusCode.serverError, error) 
         }
     }
 }

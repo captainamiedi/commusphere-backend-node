@@ -47,6 +47,9 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    verify_email: {
+      type: DataTypes.BOOLEAN
+    },
     org_id: {
       type: DataTypes.UUID,
       allowNull: false

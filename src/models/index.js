@@ -20,10 +20,11 @@ const env = process.env.NODE_ENV || 'development';
 
 
 const db = {};
-const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
+const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID, DATABASE_URL } = process.env;
 
 let sequelize;
-const URL = `postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}` 
+const URL = `${DATABASE_URL}?&sslmode=require`
+// const URL = `postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?&sslmode=require` 
 // ?options=project%3D${ENDPOINT_ID}&sslmode=require`;
 
 sequelize = new Sequelize(URL, {
@@ -31,9 +32,10 @@ sequelize = new Sequelize(URL, {
   Option: {
     native: true,
     dialectOptions: {
-      ssl: {
-        rejectUnauthorized: false, // very important
-      }
+      ssl: true
+      // ssl: {
+      //   rejectUnauthorized: false, // very important
+      // }
     }
 
   },
