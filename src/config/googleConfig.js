@@ -160,7 +160,7 @@ const url = oauth2Client.generateAuthUrl({
 
 google.options({auth: oauth2Client});
 
-// let cred = await loadSavedCredentialsIfExist();
+let cred = await loadSavedCredentialsIfExist();
 // connectPubSub()
 // let messageId = '18c551696204d6e3';
 // await getMessage(cred, messageId);

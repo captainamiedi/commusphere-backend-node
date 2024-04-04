@@ -1,15 +1,21 @@
 {
     "development": {
-      "username": "postgres",
-      "password": "12345",
-      "database": "commusphere_development",
-      "host": "localhost",
+      "username": "captainamiedi",
+      "password": "9vAxhDGnT8ZJ",
+      "database": "neondb",
+      "host": "ep-gentle-voice-766866.us-west-2.aws.neon.tech",
       "dialect": "postgres",
+      "ssl": true,
       "pool": {
         "max": 5,
         "min": 0,
         "acquire": 30000,
         "idle": 10000
+      },
+      "dialectOptions": {
+        "ssl": {
+           "require": true
+        }
       }
     },
     "test": {

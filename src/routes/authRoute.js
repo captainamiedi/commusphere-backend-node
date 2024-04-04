@@ -4,12 +4,16 @@ import auth from '../Validator/auth.js'
 
 const route = Router()
 
-const {signup, login} = authController
-const {signupValidation, signupValidationForm, loginValidationForm} = auth
+const {signup, login, sendPasswordResetEmail, receiveNewPassword} = authController
+const {signupValidation, signupValidationForm, loginValidationForm, forgotPassword, resetPasswordValidation} = auth
 
 
 route.post('/signup',signupValidationForm, signupValidation, signup)
 route.post('/login', loginValidationForm, signupValidation, login)
+
+route.post('/forgot', forgotPassword, sendPasswordResetEmail);
+
+route.post('/receive_new_password/:userId/:token', resetPasswordValidation, receiveNewPassword);
 
 export default route
 

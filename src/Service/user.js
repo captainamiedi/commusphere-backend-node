@@ -26,7 +26,7 @@ export const findUserByEmail = async (email) => {
 }
 export const findUserById = async (id) => {
     try {
-        return await User.findOne({where: {id}})
+        return await User.scope('withPassword').findOne({where: {id}})
     } catch (error) {
         throw error
     }

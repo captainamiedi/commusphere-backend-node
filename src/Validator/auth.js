@@ -1,4 +1,6 @@
 import { body, validationResult } from "express-validator";
+import { errorResponse } from "../utils/response.js";
+import statusCode from "../utils/statusCode.js";
 
 export default {
     signupValidation: (req, res, next) => {
@@ -21,5 +23,23 @@ export default {
     loginValidationForm: [
         body('email').trim().notEmpty().isEmail().withMessage('Email is required'),
         body('password').trim().notEmpty().withMessage('Password is required'),
-    ]
+    ],
+    forgotPassword: (req, res, next) => {
+        const {email} = req.body
+
+        if (!email || !email.trim()) {
+            return errorResponse(res, statusCode.badRequest, 'Email is required')
+        }
+
+        next()
+    },
+    resetPasswordValidation: (req, res, next) => {
+        const {password} = req.body
+
+        if (!password || !password.trim()) {
+            return errorResponse(res, statusCode.badRequest, 'Password is required')
+        }
+
+        next()
+    }
 }
