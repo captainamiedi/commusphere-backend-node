@@ -25,6 +25,11 @@ export default {
                 password
             } = req.body
 
+            const validUser = await findUserByEmail(email)
+            if (validUser === null || validUser === undefined) {
+                return errorResponse(res, statusCode.notFound, 'email or password is invalid')
+            }
+
             const salt = await bcrypt.genSalt(10);
             const hashed = await bcrypt.hash(password, salt);
 
@@ -93,7 +98,8 @@ export default {
             const token = usePasswordHashToMakeToken(user.dataValues)
             const url = getPasswordResetURL(user.dataValues, token)
             const emailTemplate = resetPasswordTemplate(user.dataValues, url)
-            return transporter(emailTemplate, res)
+            await transporter(emailTemplate, res)
+            return successResponse(res, statusCode.success, 'Password Reset Email Sent')
         } catch (error) {
             console.log(error, 'error');
             return errorResponse(res, error.statusCode || statusCode.serverError, error)
@@ -104,7 +110,10 @@ export default {
             const { userId, token } = req.params;
             const { password } = req.body;
             const user = await findUserById(userId)
-            console.log(user.dataValues.password, 'user');
+            console.log(user, 'user');
+            if(user === null || user === undefined) {
+                errorResponse(res, statusCode.notFound, 'User not found')
+            }
             const secret = `${user.dataValues.password}-${user.dataValues.createdAt}`;
             const payload = jwt.decode(token, secret);
             if (payload.userId === user.id) {

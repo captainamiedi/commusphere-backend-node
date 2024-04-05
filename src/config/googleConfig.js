@@ -150,7 +150,10 @@ export const oauth2Client = new google.auth.OAuth2(
   'http://localhost:8080/api/v1/oauth2callback'
 );
 
-const url = oauth2Client.generateAuthUrl({
+google.options({auth: oauth2Client});
+const url = () => {
+  console.log('here');
+  const authorizeUrl = oauth2Client.generateAuthUrl({
   // 'online' (default) or 'offline' (gets refresh_token)
   access_type: 'offline',
 
@@ -158,9 +161,10 @@ const url = oauth2Client.generateAuthUrl({
   scope: SCOPES
 });
 
-google.options({auth: oauth2Client});
+}
+url()
 
-let cred = await loadSavedCredentialsIfExist();
-// connectPubSub()
+// let cred = await loadSavedCredentialsIfExist();
+// connectPubSub(cred)
 // let messageId = '18c551696204d6e3';
 // await getMessage(cred, messageId);
