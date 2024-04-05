@@ -21,9 +21,9 @@ export const usePasswordHashToMakeToken = ({
 export const transporter = async (msg, res) => {
     try {
       await sgMail.send(msg);
-      return res.status(200).json({ message: 'Mail sent successfully' });
+    //   return res.status(200).json({ message: 'Mail sent successfully' });
     } catch (err) {
-      return res.status(500).json({ 'Error sending email': err });
+    //   return res.status(500).json({ 'Error sending email': err });
     }
 };
 
@@ -46,7 +46,7 @@ export const resetPasswordTemplate = (user) => {
     };
 };
 
-export const welcomeEmailTemplate = () => {
+export const welcomeEmailTemplate = (user) => {
     const from = 'bright@communsphere.com';
     const to = user.email;
     const subject = 'Welcome to Communsphere!';

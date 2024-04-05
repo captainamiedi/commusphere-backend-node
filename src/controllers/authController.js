@@ -48,7 +48,7 @@ export default {
             const user = await signupService(userObj, orgObj)
             const token = generateToken(user.userRes.id, user.userRes.email, user.orgRes.org_name, user.orgRes.id)
             // Welcome email and account verification Email
-            const emailTemplate = welcomeEmailTemplate(first_name)
+            const emailTemplate = welcomeEmailTemplate(user.userRes)
             transporter(emailTemplate, res)
             return successResponseWithData(res, statusCode.created, 'Signup successful', user)
         } catch (error) {
