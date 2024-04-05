@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       verify_email: {
-        type: Sequelize.BLOB
+        type: Sequelize.BOOLEAN
       },
       org_id: {
         type: Sequelize.UUID,
