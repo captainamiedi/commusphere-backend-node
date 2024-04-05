@@ -23,13 +23,13 @@ export const transporter = async (msg, res) => {
       await sgMail.send(msg);
     //   return res.status(200).json({ message: 'Mail sent successfully' });
     } catch (err) {
-    //   return res.status(500).json({ 'Error sending email': err });
+      return res.status(500).json({ 'Error sending email': err });
     }
 };
 
 export const getPasswordResetURL = (user, token) => `${process.env.RESET_PASSWORD_URL}${user.id}/${token}`;
 
-export const resetPasswordTemplate = (user) => {
+export const resetPasswordTemplate = (user, url) => {
     const from = 'bright@communsphere.com';
     const to = user.email;
     const subject = 'Communsphere Password Reset';
