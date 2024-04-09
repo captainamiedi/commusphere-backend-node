@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import sgMail from '@sendgrid/mail';
+import dkim from 'dkim'
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -60,4 +61,29 @@ export const welcomeEmailTemplate = (user) => {
     return {
       from, to, subject, html
     };
+}
+
+export const generateDKIMRecords = (domainName) => {
+  try {
+    const response = dkim.getKey(domainName, function( error, key ) {
+      console.log(error, 'error');
+      console.log(key, 'keys');
+    })
+//     // Generate DKIM keys
+//   dkim.generateKeys(domainName, (err, keypair) => {
+//   if (err) {
+//     console.error('Error generating DKIM keys:', err);
+//     return;
+//   }
+
+//   console.log('Public key (DNS TXT record):');
+//   console.log(dkim.getDkimRecord(keypair));
+
+//   console.log('\nPrivate key:');
+//   console.log(keypair.private);
+// });
+    console.log(response, 'response');
+  } catch (error) {
+    throw error
+  }
 }
