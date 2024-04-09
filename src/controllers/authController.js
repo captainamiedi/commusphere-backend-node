@@ -45,6 +45,10 @@ export default {
                 org_size,
 
             }
+            const validUser = await findUserByEmail(email)
+            if (validUser) {
+                return errorResponse(res, statusCode.badRequest, 'Email already exist. Please login')
+            }
             const user = await signupService(userObj, orgObj)
             const token = generateToken(user.userRes.id, user.userRes.email, user.orgRes.org_name, user.orgRes.id)
             // Welcome email and account verification Email
