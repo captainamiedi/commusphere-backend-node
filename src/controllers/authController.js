@@ -40,7 +40,7 @@ export default {
             const orgObj = {
                 org_name,
                 org_address,
-                org_email,
+                org_email: org_email || email,
                 org_phone_number,
                 org_size,
 
