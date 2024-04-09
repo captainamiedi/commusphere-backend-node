@@ -13,7 +13,7 @@ export const createOrg = async (orgObj) => {
 
 export const findOrgByEmail = async (email) => {
     try {
-        return await Organisation.findOne({where: {email}})
+        return await Organisation.findOne({where: {org_email: email}})
     } catch (error) {
        throw error 
     }

@@ -25,11 +25,6 @@ export default {
                 password
             } = req.body
 
-            const validUser = await findUserByEmail(email)
-            if (validUser === null || validUser === undefined) {
-                return errorResponse(res, statusCode.notFound, 'email or password is invalid')
-            }
-
             const salt = await bcrypt.genSalt(10);
             const hashed = await bcrypt.hash(password, salt);
 
@@ -96,6 +91,7 @@ export default {
                 errorResponse(res, statusCode.notFound, 'Email not found')
             }
             const token = usePasswordHashToMakeToken(user.dataValues)
+            console.log(token, 'token');
             const url = getPasswordResetURL(user.dataValues, token)
             const emailTemplate = resetPasswordTemplate(user.dataValues, url)
             await transporter(emailTemplate, res)
