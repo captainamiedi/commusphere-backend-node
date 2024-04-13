@@ -65,7 +65,7 @@ export default {
             const {email, password} = req.body
             const validUser = await findUserByEmail(email)
             if (validUser === null || validUser === undefined) {
-                return errorResponse(res, statusCode.notFound, 'email or password is invalid')
+                return errorResponse(res, statusCode.badRequest, 'email or password is invalid')
             }
             const { password: hashedPassword, ...data } = validUser.dataValues;
             const validPassword = await comparePassword(password, hashedPassword);
