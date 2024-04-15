@@ -31,6 +31,7 @@ export default {
 
     getOauthToken: async (req, res) => {
         const code = req.query.code;
+        console.log(req.query, 'auth query');
         const {org_id} = req.userData
         try {
           const { tokens } = await oauth2Client.getToken(code);
