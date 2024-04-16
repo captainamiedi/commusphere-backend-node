@@ -63,26 +63,23 @@ export const welcomeEmailTemplate = (user) => {
     };
 }
 
-export const generateDKIMRecords = (domainName) => {
+export const generateDKIMRecords = async (domainName) => {
   try {
-    const response = dkim.getKey(domainName, function( error, key ) {
-      console.log(error, 'error');
-      console.log(key, 'keys');
-    })
-//     // Generate DKIM keys
-//   dkim.generateKeys(domainName, (err, keypair) => {
-//   if (err) {
-//     console.error('Error generating DKIM keys:', err);
-//     return;
-//   }
-
-//   console.log('Public key (DNS TXT record):');
-//   console.log(dkim.getDkimRecord(keypair));
-
-//   console.log('\nPrivate key:');
-//   console.log(keypair.private);
-// });
+    const response = await fetch(`${process.env.PLAYWRIGHT_PROJECT_URL}get_domain_dkim/${domainName}`)
     console.log(response, 'response');
+    const data = await response.json()
+    return data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const DKIMRecordsLookup = async (domainName) => {
+  try {
+    const response = await fetch(`${process.env.PLAYWRIGHT_PROJECT_URL}domain_dkim_lookup/${domainName}`)
+    console.log(response, 'response');
+    const data = await response.json()
+    return data
   } catch (error) {
     throw error
   }
