@@ -147,7 +147,7 @@ async function getMessage(auth, messageId) {
 export const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  'http://localhost:8080/api/v1/oauth2callback'
+  'http://localhost:5173/billing/overview'
 );
 
 google.options({auth: oauth2Client});

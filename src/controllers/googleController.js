@@ -45,18 +45,24 @@ export default {
           }
           
           await createSocialDetails(payload)
-         return successResponse(res, statusCode.created, 'Operation successfull')
+         return successResponse(res, statusCode.created, 'Operation successful')
         } catch (error) {
           console.error('Error retrieving access token', error);
           return errorResponse(res, error.statusCode || statusCode.serverError, error)
         }
     },
     googleAuth: async (req, res) => {
-        const authUrl = oauth2Client.generateAuthUrl({
-            access_type: 'offline',
-            scope: SCOPES,
-          });
-          res.redirect(authUrl);
+        try {
+            const authUrl = oauth2Client.generateAuthUrl({
+                access_type: 'offline',
+                scope: SCOPES,
+              });
+              console.log(authUrl, 'auth url');
+              return successResponseWithData(res, statusCode.success, 'Url generated successfully', authUrl)
+        } catch (error) {
+            return errorResponse(res, error.statusCode || statusCode.serverError, error)
+            
+        }
     },
     sendGmailMessage: async (req, res) => {
         try {

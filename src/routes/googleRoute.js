@@ -11,6 +11,6 @@ route.get('/test', () => {
 })
 route.get('/oauth2callback', getToken, verifyToken, getOauthToken)
 route.post('/gmail-webhook', gmailPushWebhook)
-route.get('/google/auth', googleAuth)
+route.get('/google/auth', getToken, verifyToken, googleAuth)
 
 export default route
