@@ -4,7 +4,15 @@ const {socialMedia} = models
 
 export const createSocialDetails = async (socialObj) => {
     try {
-        const social = await socialMedia.create(socialObj)
+        const socials = await social.findOne({
+            where: {org_id: social.org_id}
+        })
+        if (!socials) {
+            return await socialMedia.create(socialObj)
+        }
+        const social = await socialMedia.update(socialObj, {
+            where: {org_id: socialObj.org_id}
+        })
         return social
     } catch (error) {
         throw error
