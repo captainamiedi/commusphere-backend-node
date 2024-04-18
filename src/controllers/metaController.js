@@ -251,5 +251,25 @@ export default {
     } catch (error) {
       console.log(error);
     }
-  }
+  },
+  getMetaAccessToken: async (req, res) => {
+    console.log('i hit the get Oauth api');
+    const code = req.query.code;
+    console.log(req.query, 'auth query');
+    const {org_id} = req.userData
+    try { 
+      console.log(tokens, 'token');
+      const payload = {
+        name: 'meta_access_token',
+        org_id,
+        social_metadata: code
+      }
+      
+      await createSocialDetails(payload)
+     return successResponse(res, statusCode.created, 'Operation successful')
+    } catch (error) {
+      console.error('Error retrieving access token', error);
+      return errorResponse(res, error.statusCode || statusCode.serverError, error)
+    }
+},
 }

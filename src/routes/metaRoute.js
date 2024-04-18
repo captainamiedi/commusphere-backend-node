@@ -1,9 +1,10 @@
 import { Router } from 'express'
 import metaController from '../controllers/metaController.js'
+import { getToken, verifyToken } from '../middleware/authMiddleware.js'
 
 const route = Router()
 
-const {facebookWebhook, instagramWebhook, instagramBusinessWebhook, instagramBusinessWebhookReceiver, getPageAccess} = metaController
+const {facebookWebhook, instagramWebhook, instagramBusinessWebhook, instagramBusinessWebhookReceiver, getPageAccess, getMetaAccessToken} = metaController
 
 route.get('/consumer_instagram/webhook', metaController.instagramConsumerWebhook)
 route.post('/consumer_instagram/oauth2callback', metaController.oauth2callback)
@@ -11,6 +12,7 @@ route.post('/consumer_instagram/webhook', instagramWebhook)
 route.post('/business_instagram/webhook', instagramBusinessWebhook)
 route.get('/business_instagram/webhook', instagramBusinessWebhookReceiver)
 route.get('/get_page_access', getPageAccess)
+route.get('/meta_access_token', getToken, verifyToken, getMetaAccessToken)
 
 export default route
 
