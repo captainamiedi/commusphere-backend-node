@@ -5,7 +5,7 @@ const {socialMedia} = models
 export const createSocialDetails = async (socialObj) => {
     try {
         const socials = await social.findOne({
-            where: {org_id: social.org_id, name: socialObj.name}
+            where: {org_id: socialObj.org_id, name: socialObj.name}
         })
         if (!socials) {
             return await socialMedia.create(socialObj)
