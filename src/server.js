@@ -14,7 +14,12 @@ import socketService from './Service/socketService.js';
 
 
 const httpServer = createServer(app);
-const io = new Server(httpServer, { /* options */ });
+const io = new Server(httpServer, { 
+  cors: {
+    origin: "*",
+    methods: ['GET', 'POST', 'PUT'],
+  },
+});
 
 global._io = io
 const prefix = '/api/v1'
