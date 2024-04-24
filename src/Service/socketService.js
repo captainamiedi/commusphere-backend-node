@@ -13,5 +13,6 @@ export default (io) => {
             __createdtime__,
           });
         })
+        socket.emit('testing', 1, "2", { 3: "4", 5: Buffer.from([6]) })
     })
 }
