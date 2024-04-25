@@ -9,7 +9,7 @@ export default (io) => {
           let __createdtime__ = Date.now(); // Current timestamp
           // Send message to all users currently in the room, apart from the user that just joined
           socket.to(room).emit('receive_message', {
-            message: `${username} has joined the chat room`,
+            message: `${userName} has joined the chat room`,
             __createdtime__,
           });
         })
