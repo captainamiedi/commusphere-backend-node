@@ -9,10 +9,14 @@ export default (io) => {
           let __createdtime__ = Date.now(); // Current timestamp
           // Send message to all users currently in the room, apart from the user that just joined
           socket.to(room).emit('receive_message', {
-            message: `${username} has joined the chat room`,
+            message: `${userName} has joined the chat room`,
             __createdtime__,
           });
         })
         socket.emit('testing', 1, "2", { 3: "4", 5: Buffer.from([6]) })
+        socket.emit('receive_message', {
+          message: "testing receive_message lister",
+          __createdtime__:  Date.now()
+        })
     })
 }
