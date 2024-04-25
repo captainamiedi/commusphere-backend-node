@@ -14,9 +14,5 @@ export default (io) => {
           });
         })
         socket.emit('testing', 1, "2", { 3: "4", 5: Buffer.from([6]) })
-        socket.emit('receive_message', {
-          message: "testing receive_message lister",
-          __createdtime__:  Date.now()
-        })
     })
 }
