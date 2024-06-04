@@ -5,12 +5,12 @@ import { getToken, verifyToken} from '../middleware/authMiddleware.js'
 
 const route = Router()
 
-const { createLead, getLeadsByOrgId, leadOpportunityCreate, createOrganizationLeadStatus, getOrganizationLeadStatus, createActivity, updateActivity, deleteActivity, getLeadActivity, getLeadContact, createContact, updateContact, deleteContact, updateOpportunity, deleteOpportunity, deleteLeadRequest, updateLeadRequest, getSingleLeadId } = leadPipelineController
+const { createLead, getLeadsByOrgId, leadOpportunityCreate, createOrganizationLeadStatus, getOrganizationLeadStatus, createActivity, updateActivity, deleteActivity, getLeadActivity, getLeadContact, createContact, updateContact, deleteContact, updateOpportunity, deleteOpportunity, deleteLeadRequest, updateLeadRequest } = leadPipelineController
 const { createLeadVal, validateLeadForm, validateLeadOpportunity, validateStatus , validateLeadActivity, validateLeadContact} = leadPipeline
 
 
 route.post('/lead_pipeline', getToken, verifyToken, validateLeadForm, createLeadVal, createLead)
-route.get('/lead_pipeline', getToken, verifyToken, getSingleLeadId)
+route.get('/lead_pipeline', getToken, verifyToken, getLeadsByOrgId)
 route.get('/lead_pipeline/:id', getToken, verifyToken, getLeadsByOrgId)
 route.post('/lead_opportunity/:id', getToken, verifyToken, validateLeadOpportunity, createLeadVal, leadOpportunityCreate)
 route.post('/organization_status', getToken, verifyToken, validateStatus, createLeadVal, createOrganizationLeadStatus)
