@@ -10,7 +10,6 @@ import {
     deleteLeadOpportunity,
     fetchLeadActivityById,
     fetchLeadContactById,
-    fetchLeadsById,
     fetchLeadsByOrg,
     fetchOrganizationStatusService,
     updateLead,
@@ -279,15 +278,6 @@ export default {
             return successResponse(res, statusCode.success, 'Lead deleted successfully')
         } catch (error) {
             console.log(error);
-            return errorResponse(res, error.statusCode || statusCode.serverError, error)
-        }
-    },
-    getSingleLeadId: async (req, res) => {
-        try {
-            const {id} = req.params
-            const lead = await fetchLeadsById(id)
-            return successResponseWithData(res, statusCode.success, 'Lead Pipeline successful', lead)    
-        } catch (error) {
             return errorResponse(res, error.statusCode || statusCode.serverError, error)
         }
     },

@@ -43,22 +43,7 @@ export const fetchLeadsByOrg = async (id) => {
 }
 export const fetchLeadsById = async (id) => {
     try {
-        const lead = await Lead.findByPk(id, {
-            include: [
-                {
-                    model: LeadContact,
-                    as: 'leadContact'
-                }, 
-                {
-                    model: LeadOpportunity,
-                    as: 'leadOpportunity'
-                }, 
-                {
-                    model: LeadActivity,
-                    as: 'leadActivities'
-                }, 
-            ],
-        })
+        const lead = await Lead.findByPk(id)
         return lead
     } catch (error) {
         throw error
