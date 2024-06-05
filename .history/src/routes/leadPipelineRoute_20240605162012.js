@@ -10,7 +10,7 @@ const { createLeadVal, validateLeadForm, validateLeadOpportunity, validateStatus
 
 
 route.post('/lead_pipeline', getToken, verifyToken, validateLeadForm, createLeadVal, createLead)
-route.get('/lead_pipeline/:id', getToken, verifyToken, getSingleLeadId)
+route.get('/lead_pipeline/"id', getToken, verifyToken, getSingleLeadId)
 route.get('/lead_pipeline', getToken, verifyToken, getLeadsByOrgId)
 route.post('/lead_opportunity/:id', getToken, verifyToken, validateLeadOpportunity, createLeadVal, leadOpportunityCreate)
 route.post('/organization_status', getToken, verifyToken, validateStatus, createLeadVal, createOrganizationLeadStatus)
