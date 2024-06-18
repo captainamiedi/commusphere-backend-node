@@ -1,6 +1,6 @@
 import models from '../models/index.js'
 
-const {Lead, LeadActivity, LeadContact, LeadOpportunity, LeadStatus, OrganizationLeadStatus} = models
+const {Lead, LeadActivity, LeadContact, LeadOpportunity, LeadStatus, OrganizationLeadStatus, OrganizationLeadSetting} = models
 
 
 export const fetchLeadsByOrg = async (id) => {
@@ -261,6 +261,28 @@ export const fetchOrganizationStatusService = async (id) => {
         })
         return contact
     } catch (error) {
+        throw error
+    }
+}
+
+export const fetchLeadOpportunityService = async (id, org_id) => {
+    try {
+        const contact = await LeadContact.findAll({
+            where : {
+                org_id  
+            },
+        })
+        const opportunity = await LeadOpportunity.findByPk(id, {
+            include: [
+                {
+                    model: OrganizationLeadSetting,
+                    as: 'OrganizationLeadSetting'
+                }, 
+            ],
+        })
+        return {opportunity, contact}
+    } catch (error) {
+        console.log(error);
         throw error
     }
 }

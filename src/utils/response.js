@@ -16,7 +16,7 @@ const successResponseWithData = (res, statusCode, message, data) => res
 const errorResponse = (res, statusCode, error) => res
   .status(statusCode).send({
     statusCode,
-    error,
+    error: JSON.stringify(error),
   });
 
 export { successResponse, successResponseWithData, errorResponse };

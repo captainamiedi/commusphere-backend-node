@@ -34,4 +34,13 @@ export default {
         body('email').trim().notEmpty().withMessage('meeting date is requires'),
         body('phone_number').trim().notEmpty().withMessage('meeting date is requires'),
     ],
+    validateEmailTemplate: [
+        body('title').trim().notEmpty().withMessage('Title is requires'),
+        body('message').trim().notEmpty().withMessage('message is requires'),
+    ],
+    validateMessagingTemplateSetting: [
+        body('stage_probability').trim().notEmpty().withMessage('probability is requires'),
+        body('stage_probability_template_id').trim().notEmpty().withMessage('template id is requires'),
+        body('opportunity_id').trim().notEmpty().withMessage('opportunity id is requires'),
+    ]
 }

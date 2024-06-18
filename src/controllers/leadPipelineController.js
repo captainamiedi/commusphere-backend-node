@@ -10,6 +10,7 @@ import {
     deleteLeadOpportunity,
     fetchLeadActivityById,
     fetchLeadContactById,
+    fetchLeadOpportunityService,
     fetchLeadsById,
     fetchLeadsByOrg,
     fetchOrganizationStatusService,
@@ -287,6 +288,16 @@ export default {
             const {id} = req.params
             const lead = await fetchLeadsById(id)
             return successResponseWithData(res, statusCode.success, 'Lead Pipeline successful', lead)    
+        } catch (error) {
+            return errorResponse(res, error.statusCode || statusCode.serverError, error)
+        }
+    },
+    getSingleOpportunityId: async (req, res) => {
+        try {
+            const {id} = req.params
+            const { org_id } = req.userData
+            const lead = await fetchLeadOpportunityService(id, org_id)
+            return successResponseWithData(res, statusCode.success, 'Lead Opportunity successful', lead)    
         } catch (error) {
             return errorResponse(res, error.statusCode || statusCode.serverError, error)
         }

@@ -12,6 +12,10 @@ export default (sequelize, DataTypes) => {
         foreignKey: 'lead_id',
         as: 'lead'
       });
+      this.hasMany(models.OrganizationLeadSetting, {
+        foreignKey: 'opportunity_id',
+        as: 'OrganizationLeadSetting'
+      });
     }
   }
 

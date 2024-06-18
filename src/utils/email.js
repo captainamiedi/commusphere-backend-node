@@ -1,40 +1,41 @@
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-import sgMail from '@sendgrid/mail';
-import dkim from 'dkim'
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import sgMail from "@sendgrid/mail";
+import dkim from "dkim";
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 dotenv.config();
 
 export const usePasswordHashToMakeToken = ({
-    password: passwordHash,
-    id: userId,
-    createdAt
-  }) => {
-    const secret = `${passwordHash - createdAt}`;
-    const token = jwt.sign({ userId }, secret, {
-      expiresIn: 3600 // 1 hour
-    });
-    return token;
+  password: passwordHash,
+  id: userId,
+  createdAt,
+}) => {
+  const secret = `${passwordHash - createdAt}`;
+  const token = jwt.sign({ userId }, secret, {
+    expiresIn: 3600, // 1 hour
+  });
+  return token;
 };
 
 export const transporter = async (msg, res) => {
-    try {
-      await sgMail.send(msg);
+  try {
+    await sgMail.send(msg);
     //   return res.status(200).json({ message: 'Mail sent successfully' });
-    } catch (err) {
-      return res.status(500).json({ 'Error sending email': err });
-    }
+  } catch (err) {
+    return res.status(500).json({ "Error sending email": err });
+  }
 };
 
-export const getPasswordResetURL = (user, token) => `${process.env.RESET_PASSWORD_URL}${user.id}/${token}`;
+export const getPasswordResetURL = (user, token) =>
+  `${process.env.RESET_PASSWORD_URL}${user.id}/${token}`;
 
 export const resetPasswordTemplate = (user, url) => {
-    const from = 'bright@communsphere.com';
-    const to = user.email;
-    const subject = 'Communsphere Password Reset';
-    const html = `
+  const from = "bright@communsphere.com";
+  const to = user.email;
+  const subject = "Communsphere Password Reset";
+  const html = `
     <p>Hey ${user.first_name || user.email},</p>
     <p>We heard that you lost your Communsphere password. Sorry about that!</p>
     <p>But don’t worry! You can use the following link to reset your password:</p>
@@ -42,45 +43,75 @@ export const resetPasswordTemplate = (user, url) => {
     <p>If you don’t use this link within 1 hour, it will expire.</p>
     <p>–Your friends at Communsphere</p>
     `;
-    return {
-      from, to, subject, html
-    };
+  return {
+    from,
+    to,
+    subject,
+    html,
+  };
 };
 
 export const welcomeEmailTemplate = (user) => {
-    const from = 'bright@communsphere.com';
-    const to = user.email;
-    const subject = 'Welcome to Communsphere!';
-    const html = `
+  const from = "bright@communsphere.com";
+  const to = user.email;
+  const subject = "Welcome to Communsphere!";
+  const html = `
     <p>Welcome to COmmunsphere</p>
     <p>Welcome ${user.first_name || user.email},</p>
     <p>Thanks for signing up!</p>
     <p>If you’ve been trying to streamline customer conversations scattered across numerous apps, we bet you’ll find Simpu a fresh, calm, and orderly alternative to the chaos you’re probably used to. It doesn’t have to be nuts!</p>
     <p>–Your friends at Communsphere</p>
     `;
-    return {
-      from, to, subject, html
-    };
-}
+  return {
+    from,
+    to,
+    subject,
+    html,
+  };
+};
 
 export const generateDKIMRecords = async (domainName) => {
   try {
-    const response = await fetch(`${process.env.PLAYWRIGHT_PROJECT_URL}get_domain_dkim/${domainName}`)
-    console.log(response, 'response');
-    const data = await response.json()
-    return data
+    const response = await fetch(
+      `${process.env.PLAYWRIGHT_PROJECT_URL}get_domain_dkim/${domainName}`
+    );
+    console.log(response, "response");
+    const data = await response.json();
+    return data;
   } catch (error) {
-    throw error
+    throw error;
   }
-}
+};
 
 export const DKIMRecordsLookup = async (domainName) => {
   try {
-    const response = await fetch(`${process.env.PLAYWRIGHT_PROJECT_URL}domain_dkim_lookup/${domainName}`)
-    console.log(response, 'response');
-    const data = await response.json()
-    return data
+    const response = await fetch(
+      `${process.env.PLAYWRIGHT_PROJECT_URL}domain_dkim_lookup/${domainName}`
+    );
+    console.log(response, "response");
+    const data = await response.json();
+    return data;
   } catch (error) {
-    throw error
+    throw error;
   }
-}
+};
+
+export const replaceVariable = (emailTemplate, variables) => {
+  // Regular expression to match placeholders like {VARIABLE}
+  const variableRegex = /{([A-Z]+)}/g;
+
+  // Replace placeholders in email template
+  const replacedTemplate = emailTemplate.replace(
+    variableRegex,
+    (match, variable) => {
+      // Check if the variable exists in variables object
+      if (variables.hasOwnProperty(variable)) {
+        return variables[variable];
+      } else {
+        // Placeholder not found, return the original match
+        return match;
+      }
+    }
+  );
+  return replacedTemplate
+};
