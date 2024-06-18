@@ -5,7 +5,7 @@ import { getToken, verifyToken} from '../middleware/authMiddleware.js'
 
 const route = Router()
 
-const { createLead, getLeadsByOrgId, leadOpportunityCreate, createOrganizationLeadStatus, getOrganizationLeadStatus, createActivity, updateActivity, deleteActivity, getLeadActivity, getLeadContact, createContact, updateContact, deleteContact, updateOpportunity, deleteOpportunity, deleteLeadRequest, updateLeadRequest, getSingleLeadId } = leadPipelineController
+const { createLead, getLeadsByOrgId, leadOpportunityCreate, createOrganizationLeadStatus, getOrganizationLeadStatus, createActivity, updateActivity, deleteActivity, getLeadActivity, getLeadContact, createContact, updateContact, deleteContact, updateOpportunity, deleteOpportunity, deleteLeadRequest, updateLeadRequest, getSingleLeadId, getSingleOpportunityId } = leadPipelineController
 const { createLeadVal, validateLeadForm, validateLeadOpportunity, validateStatus , validateLeadActivity, validateLeadContact} = leadPipeline
 
 
@@ -27,5 +27,6 @@ route.put('/lead_opportunity/:id', getToken, verifyToken, updateOpportunity)
 route.delete('/lead_opportunity/:id', getToken, verifyToken, deleteOpportunity)
 route.delete('/lead_pipeline/:id', getToken, verifyToken, deleteLeadRequest)
 route.put('/lead_pipeline/:id', getToken, verifyToken, updateLeadRequest)
+route.get('/lead_opportunity/:id', getToken, verifyToken, getSingleOpportunityId)
 
 export default route

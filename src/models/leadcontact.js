@@ -1,4 +1,4 @@
-'use strict';
+  'use strict';
 import { Model, DataTypes } from 'sequelize';
 
 export default (sequelize, DataTypes) => {
