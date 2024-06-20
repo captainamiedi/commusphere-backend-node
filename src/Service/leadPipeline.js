@@ -265,11 +265,11 @@ export const fetchOrganizationStatusService = async (id) => {
     }
 }
 
-export const fetchLeadOpportunityService = async (id, org_id) => {
+export const fetchLeadOpportunityService = async (id, org_id, lead_id) => {
     try {
         const contact = await LeadContact.findAll({
             where : {
-                org_id  
+                lead_id  
             },
         })
         const opportunity = await LeadOpportunity.findByPk(id, {
