@@ -294,9 +294,9 @@ export default {
     },
     getSingleOpportunityId: async (req, res) => {
         try {
-            const {id, leadId} = req.params
+            const {id} = req.params
             const { org_id } = req.userData
-            const lead = await fetchLeadOpportunityService(id, org_id, leadId)
+            const lead = await fetchLeadOpportunityService(id, org_id)
             return successResponseWithData(res, statusCode.success, 'Lead Opportunity successful', lead)    
         } catch (error) {
             return errorResponse(res, error.statusCode || statusCode.serverError, error)

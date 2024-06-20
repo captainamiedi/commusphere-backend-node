@@ -267,11 +267,6 @@ export const fetchOrganizationStatusService = async (id) => {
 
 export const fetchLeadOpportunityService = async (id, org_id, lead_id) => {
     try {
-        const contact = await LeadContact.findAll({
-            where : {
-                lead_id  
-            },
-        })
         const opportunity = await LeadOpportunity.findByPk(id, {
             include: [
                 {
@@ -279,6 +274,11 @@ export const fetchLeadOpportunityService = async (id, org_id, lead_id) => {
                     as: 'OrganizationLeadSetting'
                 }, 
             ],
+        })
+        const contact = await LeadContact.findAll({
+            where : {
+                lead_id: opportunity.dataValues.lead_id
+            },
         })
         return {opportunity, contact}
     } catch (error) {
