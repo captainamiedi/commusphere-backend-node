@@ -27,6 +27,6 @@ route.put('/lead_opportunity/:id', getToken, verifyToken, updateOpportunity)
 route.delete('/lead_opportunity/:id', getToken, verifyToken, deleteOpportunity)
 route.delete('/lead_pipeline/:id', getToken, verifyToken, deleteLeadRequest)
 route.put('/lead_pipeline/:id', getToken, verifyToken, updateLeadRequest)
-route.get('/lead_opportunity/:id', getToken, verifyToken, getSingleOpportunityId)
+route.get('/lead_opportunity/:id/:leadId', getToken, verifyToken, getSingleOpportunityId)
 
 export default route
