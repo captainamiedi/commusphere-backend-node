@@ -46,7 +46,7 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.DATE
     },
     message_receiver: {
-      type: DataTypes.STRING
+      type: DataTypes.ARRAY(DataTypes.STRING)
     },
     opportunity_id: {
       type: DataTypes.UUID,

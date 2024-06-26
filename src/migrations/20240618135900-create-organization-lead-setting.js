@@ -23,9 +23,6 @@ module.exports = {
       message_sent_at: {
         type: Sequelize.DATE
       },
-      message_receiver: {
-        type: Sequelize.STRING
-      },
       org_id: {
         type: Sequelize.UUID,
         allowNull: false
