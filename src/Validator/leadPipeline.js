@@ -42,5 +42,10 @@ export default {
         body('stage_probability').trim().notEmpty().withMessage('probability is requires'),
         body('stage_probability_template_id').trim().notEmpty().withMessage('template id is requires'),
         body('opportunity_id').trim().notEmpty().withMessage('opportunity id is requires'),
+    ],
+    validateMessagingTemplateVariable: [
+        body('key').trim().notEmpty().withMessage('Key is required'),
+        body('type').trim().notEmpty().withMessage('type is required'),
+        body('value').trim().notEmpty().withMessage('value is required'),
     ]
 }
