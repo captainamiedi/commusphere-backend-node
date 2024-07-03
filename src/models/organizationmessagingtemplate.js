@@ -34,7 +34,7 @@ export default (sequelize) => {
     },
     subject: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     message: {
       type: DataTypes.TEXT,

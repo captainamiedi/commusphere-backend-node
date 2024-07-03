@@ -13,6 +13,10 @@ export default {
                 sender_email,
                 type
             } = req.body
+
+            if (type == 'email' && !subject) {
+                return errorResponse(res, statusCode.badRequest, 'Subject is required')
+            }
             
             const payload = {
                 org_id: req.userData.org_id,
