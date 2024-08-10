@@ -21,7 +21,7 @@ export const createSocialDetails = async (socialObj) => {
 
 export const findSocialByOrgId = async (org_id, name) => {
     try {
-        const social = await socialMedia.findAll({
+        const social = await socialMedia.findOne({
             where: {
                 org_id,
                 name
