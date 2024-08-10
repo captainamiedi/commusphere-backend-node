@@ -1,5 +1,6 @@
+import { createEmailConfigService, fetchConfigService } from "../Service/emailConfigService.js";
 import { createVariableService, getVariableService } from "../Service/emailTemplateService.js";
-import { DKIMRecordsLookup, generateDKIMRecords } from "../utils/email.js"
+import { dkimLookup, DKIMRecordsGenerate, DKIMRecordsLookup, generateDKIMRecords, nodemailerTransport } from "../utils/email.js"
 import { errorResponse, successResponse, successResponseWithData } from "../utils/response.js";
 import statusCode from "../utils/statusCode.js";
 import dns2 from "dns2";
@@ -58,4 +59,71 @@ export default {
           return errorResponse(res, error.status || statusCode.serverError, error)  
         }
     },
+    dkimGenerator: async(req, res) => {
+        try {
+            const { domain } = req.params
+            const domainKeys = await DKIMRecordsGenerate(domain)
+            return successResponseWithData(res, statusCode.success, 'DKIM Generation successful', domainKeys)
+        } catch (error) {
+            return errorResponse(res, error.status || statusCode.serverError, error)  
+        }
+    },
+    dkimLookupRequest: async(req, res) => {
+        try {
+            const { domain, selector, recordTxt, recordValue, pubKey, privKey } = req.body
+            const { org_id } = req.userData
+            const domainKeys = await dkimLookup(domain)
+            if (domainKeys.record.toLowerCase() == 'valid' && recordValue == domainKeys.record) {
+                const payload = {
+                    selector,
+                    domain,
+                    private_key: privKey,
+                    public_key: pubKey,
+                    recordTxt,
+                    recordValue,
+                    org_id,
+                    is_valid: true
+                }
+                await createEmailConfigService(payload)
+                return successResponse(res, statusCode.success, 'DKIM lookup successful')
+            }else {
+                return successResponse(res, statusCode.success,  "DKIM record not found.")
+            }
+        } catch (error) {
+            return errorResponse(res, error.status || statusCode.serverError, error)  
+        }
+    },
+    sendMail: async (req, res) => {
+        try {
+            const { org_id } = req.userData
+            const emailConfig = await fetchConfigService(org_id)
+            if (emailConfig.is_valid) {
+                const data = {
+                    private_key: emailConfig.private_key,
+                    domain: emailConfig.domain
+                }
+                const transporter = nodemailerTransport(data)
+                const message = {
+                    from: 'bright@scantopay.com',
+                    to: 'captainamiedi1@gmail.com',
+                    subject: 'testing',
+                    html: 'this is testing message'
+                }
+                transporter.sendMail(message, function (err, info) {
+                    if (err) {
+                        console.log(err);
+                        return errorResponse(res, statusCode.badRequest, err)
+                      // check if htmlstream is still open and close it to clean up
+                    }
+                    return successResponse(res, statusCode.success, 'Email sent successfully')
+                })
+
+            } else {
+                return errorResponse(res, statusCode.badRequest, 'Email Authenitcation is not complete')
+            }
+            
+        } catch (error) {
+            throw error
+        }
+    }
 }

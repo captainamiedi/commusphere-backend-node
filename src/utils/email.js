@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import sgMail from "@sendgrid/mail";
 import dkim from "dkim";
+import nodemailer from 'nodemailer'
+import axios from "axios";
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -96,6 +98,31 @@ export const DKIMRecordsLookup = async (domainName) => {
   }
 };
 
+export const DKIMRecordsGenerate = async (domainName) => {
+  try {
+    const payload = {
+      "domain":domainName,"selector":"S1","key_length":"2048"
+    }
+    const response = await axios.post(`${process.env.DKIM_GENERATOR_URL}dkim-generator`, payload)
+    return response.data.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const dkimLookup = async (domainName) => {
+  try {
+    const payload = {
+      "domain":domainName,"selector":"S1"
+    }
+    const response = await axios.post(`${process.env.DKIM_GENERATOR_URL}dkim-record`, payload)
+    console.log(response.data);
+    return response.data.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const replaceVariable = (emailTemplate, variables) => {
   // Regular expression to match placeholders like {VARIABLE}
   const variableRegex = /{([A-Z]+)}/g;
@@ -115,3 +142,21 @@ export const replaceVariable = (emailTemplate, variables) => {
   );
   return replacedTemplate
 };
+
+export const nodemailerTransport = (data) => {
+  const cleanedKey = data.private_key
+  .replace(/-----BEGIN RSA PRIVATE KEY-----/, '')
+  .replace(/-----END RSA PRIVATE KEY-----\n/, '')
+  .replace(/\n/g, '');
+  const transporter = nodemailer.createTransport({
+    host: `smtp.${data.domain}`,
+    port: 465,
+    secure: true, // Use `true` for port 465, `false` for all other ports
+    dkim: {
+      domainName: data.domain,
+      keySelector: "S1",
+      privateKey: `-----BEGIN PRIVATE KEY----- ${cleanedKey}`
+    }
+  });
+  return transporter
+}

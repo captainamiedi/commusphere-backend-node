@@ -5,6 +5,7 @@ import { authenticate } from '@google-cloud/local-auth';
 import { google } from 'googleapis';
 import readline from 'readline'
 import dotenv from 'dotenv';
+import { findSocialByOrgId } from '../Service/socailService.js';
 // const fs = require('fs').promises;
 // const path = require('path');
 // const process = require('process');
@@ -162,9 +163,13 @@ const url = () => {
 });
 
 }
-url()
+// url()
+authorize().then(listLabels)
+// let cred = await findSocialByOrgId('2a8c71b9-da73-4f0f-a434-ca4a6ea70756', 'google');
+// console.log(cred.dataValues, 'cred');
+// console.log(cred.dataValues.social_metadata, 'cred');
+// const cred1 = await loadSavedCredentialsIfExist()
 
-// let cred = await loadSavedCredentialsIfExist();
-// connectPubSub(cred)
+// connectPubSub(cred1)
 // let messageId = '18c551696204d6e3';
 // await getMessage(cred, messageId);
