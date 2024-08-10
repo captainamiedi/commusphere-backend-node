@@ -1,5 +1,5 @@
 import { processGmailNotification } from "../Service/googleService.js";
-import { createSocialDetails, findSocialByOrgId } from "../Service/socialService.js";
+import { createSocialDetails, findSocialByOrgId } from "../Service/socailService.js";
 import { SCOPES, authorize, oauth2Client } from "../config/googleConfig.js";
 import { errorResponse, successResponse, successResponseWithData } from "../utils/response.js";
 import statusCode from "../utils/statusCode.js";
@@ -117,7 +117,7 @@ export default {
                 .replace(/=+$/, '');
 
             const googleToken = await findSocialByOrgId(org_id, 'google');
-            oauth2Client.setCredentials(googleToken.social_metadata);
+            oauth2Client.setCredentials(googleToken.dataValues.social_metadata);
 
             const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
             const response = await gmail.users.messages.send({
