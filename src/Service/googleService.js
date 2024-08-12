@@ -25,7 +25,7 @@ export async function processGmailNotification(email, historyId) {
         const response = await gmail.users.history.list({
             userId: 'me',
             startHistoryId: historyId,
-            labelId: ['INBOX'],
+            // labelId: ['INBOX'],
         });
 
         console.log(response, 'process response');
