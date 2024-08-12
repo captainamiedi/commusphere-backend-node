@@ -150,6 +150,7 @@ export default {
             });
 
             console.log('Watch API response:', response.data);
+            return successResponseWithData(res, statusCode.success, 'Watch successfully', response.data);
             return response.data;
         } catch (error) {
             console.error('Error setting up Gmail watch:', error);
