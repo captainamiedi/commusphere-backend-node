@@ -134,8 +134,9 @@ export default {
         }
     },
 
-    watchGmailMessage: async (org_id) => {
+    watchGmailMessage: async (req, res) => {
         try {
+            const { org_id } = req.userData;
             const googleToken = await findSocialByOrgId(org_id, 'google');
             oauth2Client.setCredentials(googleToken.dataValues.social_metadata);
 
