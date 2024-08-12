@@ -69,7 +69,7 @@ export default {
 
             await createSocialDetails(payload);
             // Optionally, start watching for Gmail messages after token creation.
-            await this.watchGmailMessage(org_id);
+            // await this.watchGmailMessage(org_id);
 
             return successResponse(res, statusCode.created, 'OAuth token obtained successfully');
         } catch (error) {
