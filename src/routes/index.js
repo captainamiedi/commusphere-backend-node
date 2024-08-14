@@ -5,6 +5,7 @@ import leadPipelineRoute from './leadPipelineRoute.js'
 import emailRouter from './emailRoute.js'
 import emailTemplateRoute from './emailTemplateRoute.js'
 import messagingTemplateSettings from './messagingTemplateSettingsRoute.js'
+import surveryRoute from './surveyRoute.js'
 
 export default (prefix, app, io) => {
     app.use(prefix, googleRouter);
@@ -14,4 +15,5 @@ export default (prefix, app, io) => {
     app.use(prefix, emailRouter);
     app.use(prefix, emailTemplateRoute);
     app.use(prefix, messagingTemplateSettings);
+    app.use(prefix, surveryRoute);
 };
