@@ -47,5 +47,8 @@ export default {
         body('key').trim().notEmpty().withMessage('Key is required'),
         body('type').trim().notEmpty().withMessage('type is required'),
         body('value').trim().notEmpty().withMessage('value is required'),
+    ],
+    validateSurvey: [
+        body('content').trim().notEmpty().withMessage('Content is required'),
     ]
 }

@@ -12,6 +12,12 @@ export default (sequelize, DataTypes) => {
   }
 
   Templates.init({
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4
+    },
     title: {
       type: DataTypes.STRING
     },
