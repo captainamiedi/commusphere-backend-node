@@ -18,35 +18,36 @@ export async function processGmailNotification(email, historyId) {
         // Retrieve stored OAuth credentials using the email or org_id
         const googleToken = await findSocialByOrgId('2a8c71b9-da73-4f0f-a434-ca4a6ea70756', 'google');
         oauth2Client.setCredentials(googleToken.dataValues.social_metadata);
-
+        console.log(googleToken, 'process token data');
+        
         const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
 
         // Retrieve the list of history records for the user starting from historyId
         const response = await gmail.users.history.list({
             userId: 'me',
-            startHistoryId: historyId,
+            startHistoryId: googleToken.dataValues.social_metadata.historyId,
             // labelId: ['INBOX'],
         });
 
         console.log(response, 'process response');
-        if (historyId) {
-            const message = await gmail.users.messages.get({
-                userId: 'me',
-                id: historyId
-            });
-            console.log(`New email received: ${message.data.snippet}`);
-            // Implement further processing of the message
-            const payload = {
-                channel: 'gmail',
-                status: 'New',
-                body: JSON.stringify(message),
-                subject: messageId,
-                org_id: '2a8c71b9-da73-4f0f-a434-ca4a6ea70756',
-                sender: email
-            }
-            await createMessage(payload)
+        // if (historyId) {
+        //     const message = await gmail.users.messages.get({
+        //         userId: 'me',
+        //         id: historyId
+        //     });
+        //     console.log(`New email received: ${message.data.snippet}`);
+        //     // Implement further processing of the message
+        //     const payload = {
+        //         channel: 'gmail',
+        //         status: 'New',
+        //         body: JSON.stringify(message),
+        //         subject: messageId,
+        //         org_id: '2a8c71b9-da73-4f0f-a434-ca4a6ea70756',
+        //         sender: email
+        //     }
+        //     await createMessage(payload)
 
-        }
+        // }
         
 
         const historyRecords = response.data.history || [];
