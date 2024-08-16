@@ -1,6 +1,6 @@
 import { response } from "express";
 import { processGmailNotification } from "../Service/googleService.js";
-import { createSocialDetails, findSocialByOrgId, updateSocial } from "../Service/socailService.js";
+import { createSocialDetails, findSocialByEmail, findSocialByOrgId, updateSocial } from "../Service/socailService.js";
 import { SCOPES, authorize, oauth2Client } from "../config/googleConfig.js";
 import { errorResponse, successResponse, successResponseWithData } from "../utils/response.js";
 import statusCode from "../utils/statusCode.js";
@@ -40,10 +40,12 @@ export default {
             const email = notificationData.emailAddress;
             const historyId = notificationData.historyId;
 
+            const socialData = await findSocialByEmail(email)
+
             console.log(`Received webhook for email: ${email}, historyId: ${historyId}`);
 
             // Process the received message
-            await processGmailNotification(email, historyId);
+            await processGmailNotification(socialData, historyId);
 
             // Acknowledge receipt of the webhook
             return successResponse(res, statusCode.success, 'Webhook received and processed successfully');
@@ -61,11 +63,15 @@ export default {
         try {
             const { tokens } = await oauth2Client.getToken(code);
             console.log('OAuth tokens received:', tokens);
-
+            oauth2Client.setCredentials(tokens);
+            const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
+            const profile = await gmail.users.getProfile({userId: 'me'});
+            const email = profile.data.emailAddress;
             const payload = {
                 name: 'google',
                 org_id,
                 social_metadata: tokens,
+                connected_email: email
             };
 
             await createSocialDetails(payload);
@@ -150,9 +156,10 @@ export default {
                 },
             });
             const temp = {
-                ...googleToken.dataValues
+                ...googleToken.dataValues,
+                watch_id: response.data.historyId
             }
-            temp.social_metadata = {...temp.social_metadata, ...response.data}
+            // temp.social_metadata = {...temp.social_metadata, ...response.data}
             console.log('Watch API response:', response.data);
             await updateSocial(org_id, temp)
             return successResponseWithData(res, statusCode.success, 'Watch successfully', response.data);

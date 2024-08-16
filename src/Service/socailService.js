@@ -19,6 +19,19 @@ export const createSocialDetails = async (socialObj) => {
     }
 }
 
+export const findSocialByEmail = async (email) => {
+    try {
+        const social = await socialMedia.findOne({
+            where: {
+                connected_email: email,
+            }
+        })
+        return social
+    } catch (error) {
+        throw error
+    }
+}
+
 export const findSocialByOrgId = async (org_id, name) => {
     try {
         const social = await socialMedia.findOne({

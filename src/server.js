@@ -83,3 +83,4 @@ httpServer.listen(PORT, () => {
 });
 
 // sequelize model:create --name MyUser --attributes first_name:string,last_name:string,bio:text
+// $ npx sequelize-cli migration:generate --name add-new-column-to-socialMedia
