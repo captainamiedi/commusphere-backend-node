@@ -30,6 +30,15 @@ export default (sequelize, DataTypes) => {
     social_metadata: {
       type:DataTypes.JSON
     },
+    metadata: {
+      type:DataTypes.JSON
+    },
+    watch_id: {
+      type:DataTypes.STRING
+    },
+    connected_email: {
+      type:DataTypes.STRING
+    },
   }, {
     sequelize,
     modelName: 'socialMedia',
