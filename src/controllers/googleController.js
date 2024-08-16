@@ -1,5 +1,6 @@
+import { response } from "express";
 import { processGmailNotification } from "../Service/googleService.js";
-import { createSocialDetails, findSocialByOrgId } from "../Service/socailService.js";
+import { createSocialDetails, findSocialByOrgId, updateSocial } from "../Service/socailService.js";
 import { SCOPES, authorize, oauth2Client } from "../config/googleConfig.js";
 import { errorResponse, successResponse, successResponseWithData } from "../utils/response.js";
 import statusCode from "../utils/statusCode.js";
@@ -148,8 +149,12 @@ export default {
                     topicName: 'projects/commusphere/topics/MyTopic',
                 },
             });
-
+            const temp = {
+                ...googleToken.dataValues
+            }
+            temp.social_metadata = {...temp.social_metadata, ...response.data}
             console.log('Watch API response:', response.data);
+            await updateSocial(org_id, temp)
             return successResponseWithData(res, statusCode.success, 'Watch successfully', response.data);
             return response.data;
         } catch (error) {
