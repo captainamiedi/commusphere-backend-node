@@ -25,13 +25,17 @@ global._io = io
 const prefix = '/api/v1'
 app.use(cors());
 
+// Increase the limit for JSON payloads
+app.use(bodyParser.json({ limit: '100mb' }));
+
 // parse requests of content-type - application/json
 app.use(express.json());
 
 app.use(errorHandler({}));
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+// Increase the limit for URL-encoded payloads
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 
 Route(prefix, app)
 // set port, listen for requests
