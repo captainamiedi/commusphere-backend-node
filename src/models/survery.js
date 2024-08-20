@@ -25,7 +25,7 @@ export default (sequelize) => {
       defaultValue: DataTypes.UUIDV4
     },
     content: {
-      type: DataTypes.TEXT,
+      type: DataTypes.JSONB,
       allowNull: false
     },
     title: {
