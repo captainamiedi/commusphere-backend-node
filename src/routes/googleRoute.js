@@ -3,7 +3,7 @@ import googleController from '../controllers/googleController.js'
 import { getToken, verifyToken } from "../middleware/authMiddleware.js";
 
 const route = Router()
-const { getUserAuthorization, oauth2callback, gmailPushWebhook, getOauthToken, googleAuth, watchGmailMessage } = googleController
+const { getUserAuthorization, oauth2callback, gmailPushWebhook, getOauthToken, googleAuth, watchGmailMessage, shopbobPushWebhook } = googleController
 
 route.get('/google_authorize', getUserAuthorization)
 route.get('/test', () => {
@@ -11,6 +11,7 @@ route.get('/test', () => {
 })
 route.get('/oauth2callback', getToken, verifyToken, getOauthToken)
 route.post('/gmail-webhook', gmailPushWebhook)
+route.post('/shopbob-webhook', shopbobPushWebhook)
 route.get('/google/auth', getToken, verifyToken, googleAuth)
 route.get('/google/watch', getToken, verifyToken, watchGmailMessage)
 
