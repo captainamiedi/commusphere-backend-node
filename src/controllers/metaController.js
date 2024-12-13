@@ -95,8 +95,7 @@ export default {
       console.log(response.data, 'respinse')
 
       res.send(response.data)
-
-      // "EAAFMZCWxqZBOIBOzyuvAC1LJP7YG8XM3tXjLm5iJOeol8A5thIzaC9WSOKWf7gkkK9gbnavLN2VLpJG92Tng3r86rZCtnDGBq68LkM3wQiZAKc161SIU4ujq6gFmX9lkaH9xhDdqeZBLQqQG7REiBQFukg8pOj9qrnrBg0Pd8NEN2zHXKzcaDcikvCNWjRTJhF786zPCzxz1XhiRi3aZBODPIcgyAGZAZCP4kwkZD"
+      
     } catch (error) {
       console.log(error, 'handle error');
     }
@@ -208,7 +207,6 @@ export default {
         longLivedToken
       } = req.body // user token
       // get user page id, page access token and business account
-      // "https://graph.facebook.com/v18.0/me/accounts?fields=id%2Cname%2Caccess_token%2Cinstagram_business_account&access_token=EAACw..."
       const response = await axios.get('https://graph.facebook.com/v18.0/me/accounts', {
         params: {
           fields: 'id,name,access_token,instagram_business_account',
@@ -216,24 +214,6 @@ export default {
         },
       })
 
-      // {
-      //   "data": [
-      //     {
-      //       "id": "134895793791914", page id
-      //       "name": "Metricsaurus",
-      //       "access_token": "EAACw...", page access token
-      //       "instagram_business_account": {
-      //         "id": "17841405309211844" Instagram Professional account ID
-      //       }
-      //     }
-      //   ],
-      //   "paging": {
-      //     "cursors": {
-      //       "before": "MTc1NTg0Nzc2ODAzNDQwMgZDZD",
-      //       "after": "MTc1NTg0Nzc2ODAzNDQwMgZDZD"
-      //     }
-      //   }
-      // }
     } catch (error) {
 
     }
