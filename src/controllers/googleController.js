@@ -55,6 +55,36 @@ export default {
         }
     },
 
+    shopbobPushWebhook: async (req, res) => {
+        try {
+            const message = req.body.message;
+            console.log(message, 'message');
+            console.log(req.body, 'message body');
+            
+            // Decode the Pub/Sub message
+            const decodedMessage = Buffer.from(message.data, 'base64').toString('utf-8');
+            const notificationData = JSON.parse(decodedMessage);
+            console.log(notificationData, 'notification data');
+            
+
+            // const email = notificationData.emailAddress;
+            // const historyId = notificationData.historyId;
+
+            // const socialData = await findSocialByEmail(email)
+
+            // console.log(`Received webhook for email: ${email}, historyId: ${historyId}`);
+
+            // // Process the received message
+            // await processGmailNotification(socialData, historyId);
+
+            // Acknowledge receipt of the webhook
+            return successResponse(res, statusCode.success, 'Webhook received and processed successfully');
+        } catch (error) {
+            console.error('Error in gmailPushWebhook:', error);
+            return errorResponse(res, statusCode.serverError, 'Failed to process webhook');
+        }
+    },
+
     getOauthToken: async (req, res) => {
         console.log('Received request for OAuth token');
         const code = req.query.code;
